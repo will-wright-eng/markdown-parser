@@ -8,7 +8,7 @@ import (
 	"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"log"
-	"os"
+	// "os"
 	"strings"
 )
 
@@ -57,13 +57,10 @@ func parseMarkdown(file string) error {
 }
 
 func extractFilename(language string) (string, bool) {
-	if strings.HasPrefix(language, "**") && strings.HasSuffix(language, "**:") {
-		filename := strings.TrimPrefix(language, "**")
-		filename = strings.TrimSuffix(filename, "**:")
-		log.Printf("Filename extracted: %s", filename)
-		return filename, true
+	// Expecting language to be in the format "filename.extension"
+	if strings.Contains(language, ".") {
+		return language, true
 	}
-	log.Println("No filename found in language specification")
 	return "", false
 }
 
@@ -77,19 +74,5 @@ func extractCodeBlockContent(codeBlock *ast.FencedCodeBlock, source []byte) stri
 }
 
 func writeFile(filename, content string) error {
-	log.Printf("Writing to file: %s", filename)
-	if err := os.MkdirAll(getDir(filename), os.ModePerm); err != nil {
-		log.Printf("Error creating directories: %s", err)
-		return err
-	}
-	if err := ioutil.WriteFile(filename, []byte(content), 0644); err != nil {
-		log.Printf("Error writing file: %s", err)
-		return err
-	}
-	log.Printf("File written successfully: %s", filename)
-	return nil
-}
-
-func getDir(filename string) string {
-	return filename[:strings.LastIndex(filename, "/")]
+	return ioutil.WriteFile(filename, []byte(content), 0644)
 }

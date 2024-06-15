@@ -1,5 +1,4 @@
-**backend/app/main.py**:
-```python
+```main.py
 from fastapi import FastAPI
 from .routes import router
 
