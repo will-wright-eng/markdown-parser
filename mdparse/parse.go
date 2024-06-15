@@ -8,12 +8,12 @@ import (
 	"github.com/yuin/goldmark/text"
 	"io/ioutil"
 	"log"
-	// "os"
+	"os"
 	"strings"
 )
 
-func parseMarkdown(file string) error {
-	log.Printf("Reading markdown file: %s", file)
+func parseMarkdownWithPrefix(file string, tmpPrefix string) error {
+	log.Printf("Starting to parse the markdown file: %s", file)
 	content, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Printf("Error reading file: %s", err)
@@ -23,24 +23,31 @@ func parseMarkdown(file string) error {
 	md := goldmark.New()
 	doc := md.Parser().Parse(text.NewReader(content))
 
+	var filename string
 	err = ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
 		}
 
+		if n.Kind() == ast.KindText {
+			textNode := n.(*ast.Text)
+			log.Printf("Bold text found: %s", textNode.Text(content))
+			textContent := string(textNode.Text(content))
+			filename = extractFilename(textContent)
+			log.Printf("Extracted filename: %s", filename)
+		}
+
 		if n.Kind() == ast.KindFencedCodeBlock {
-			log.Println("Fenced code block found -- ", n.Kind())
 			codeBlock := n.(*ast.FencedCodeBlock)
-			language := string(codeBlock.Language(content))
-			filename, ok := extractFilename(language)
-			if ok {
-				log.Printf("Extracted filename: %s", filename)
+			if filename != "" {
 				codeContent := extractCodeBlockContent(codeBlock, content)
-				err := writeFile(filename, codeContent)
+				err := writeFile(filename, codeContent, tmpPrefix)
 				if err != nil {
 					log.Printf("Error writing to file: %s", err)
 					return ast.WalkStop, err
 				}
+				log.Printf("Successfully wrote to file: %s", filename)
+				filename = "" // Reset filename after writing the file
 			}
 		}
 
@@ -52,16 +59,15 @@ func parseMarkdown(file string) error {
 		return fmt.Errorf("failed to walk through AST: %w", err)
 	}
 
-	log.Println("Markdown parsing completed successfully")
+	log.Println("Finished parsing markdown file")
 	return nil
 }
 
-func extractFilename(language string) (string, bool) {
-	// Expecting language to be in the format "filename.extension"
-	if strings.Contains(language, ".") {
-		return language, true
-	}
-	return "", false
+func extractFilename(text string) string {
+	// Extract the filename from the text in the format "**filename**:"
+	filename := strings.TrimPrefix(text, "**")
+	filename = strings.TrimSuffix(filename, "**:")
+	return filename
 }
 
 func extractCodeBlockContent(codeBlock *ast.FencedCodeBlock, source []byte) string {
@@ -73,6 +79,16 @@ func extractCodeBlockContent(codeBlock *ast.FencedCodeBlock, source []byte) stri
 	return buf.String()
 }
 
-func writeFile(filename, content string) error {
+func writeFile(filename, content string, tmpPrefix string) error {
+	filename = tmpPrefix + filename  // Prepend the temporary directory prefix to the filename
+
+	// Ensure the directory structure exists
+	if err := os.MkdirAll(getDir(filename), os.ModePerm); err != nil {
+		return err
+	}
 	return ioutil.WriteFile(filename, []byte(content), 0644)
+}
+
+func getDir(filename string) string {
+	return filename[:strings.LastIndex(filename, "/")]
 }

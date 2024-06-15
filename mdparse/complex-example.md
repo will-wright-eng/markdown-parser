@@ -1,44 +1,4 @@
-Certainly! Here’s a basic structure to get you started with your bookmarking application. The setup will include:
-
-1. **Backend**: FastAPI with a document-based storage (MongoDB).
-2. **Frontend**: Next.js.
-3. **Chrome Extension**: Using manifest v3.
-4. **Nginx**: As a reverse proxy.
-5. **Docker Compose**: For containerization.
-
-### Directory Structure
-
-```plaintext
-bookmarking-app/
-├── backend/
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── routes.py
-│   │   └── __init__.py
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/
-│   ├── pages/
-│   │   └── index.js
-│   ├── public/
-│   ├── components/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── next.config.js
-├── extension/
-│   ├── manifest.json
-│   ├── background.js
-│   └── popup.html
-├── nginx/
-│   └── nginx.conf
-├── docker-compose.yml
-└── README.md
-```
-
-### Backend: FastAPI
-
-**backend/app/main.py**:
+**backend/app/main.py**
 ```python
 from fastapi import FastAPI
 from .routes import router
@@ -48,7 +8,7 @@ app = FastAPI()
 app.include_router(router)
 ```
 
-**backend/app/routes.py**:
+**backend/app/routes.py**
 ```python
 from fastapi import APIRouter
 from .models import Bookmark
@@ -66,7 +26,7 @@ async def get_bookmarks():
     pass
 ```
 
-**backend/app/models.py**:
+**backend/app/models.py**
 ```python
 from pydantic import BaseModel
 
@@ -76,14 +36,14 @@ class Bookmark(BaseModel):
     source: str
 ```
 
-**backend/requirements.txt**:
+**backend/requirements.txt**
 ```
 fastapi
 uvicorn
 pymongo
 ```
 
-**backend/Dockerfile**:
+**backend/Dockerfile**
 ```Dockerfile
 FROM python:3.9
 
@@ -100,7 +60,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ### Frontend: Next.js
 
-**frontend/pages/index.js**:
+**frontend/pages/index.js**
 ```javascript
 import { useEffect, useState } from 'react';
 
@@ -126,7 +86,7 @@ export default function Home() {
 }
 ```
 
-**frontend/Dockerfile**:
+**frontend/Dockerfile**
 ```Dockerfile
 FROM node:14
 
@@ -147,7 +107,7 @@ CMD ["npm", "start"]
 
 ### Chrome Extension
 
-**extension/manifest.json**:
+**extension/manifest.json**
 ```json
 {
   "manifest_version": 3,
@@ -163,7 +123,7 @@ CMD ["npm", "start"]
 }
 ```
 
-**extension/background.js**:
+**extension/background.js**
 ```javascript
 chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
   fetch('http://localhost:8000/bookmarks/', {
@@ -180,7 +140,7 @@ chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
 });
 ```
 
-**extension/popup.html**:
+**extension/popup.html**
 ```html
 <!DOCTYPE html>
 <html>
@@ -197,7 +157,7 @@ chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
 
 ### Nginx
 
-**nginx/nginx.conf**:
+**nginx/nginx.conf**
 ```nginx
 server {
     listen 80;
@@ -214,7 +174,7 @@ server {
 
 ### Docker Compose
 
-**docker-compose.yml**:
+**docker-compose.yml**
 ```yaml
 version: '3.8'
 
@@ -252,41 +212,3 @@ networks:
   app-network:
     driver: bridge
 ```
-
-### README.md
-
-Provide instructions on how to build and run the application.
-
-```markdown
-# Bookmarking Application
-
-## Setup
-
-1. Clone the repository.
-2. Build and run the Docker containers:
-   ```sh
-   docker-compose up --build
-   ```
-
-3. Access the application:
-   - Frontend: `http://localhost`
-   - Backend: `http://localhost/api`
-   - Chrome Extension: Load the `extension` folder as an unpacked extension in Chrome.
-
-## Structure
-
-- **Backend**: FastAPI with MongoDB.
-- **Frontend**: Next.js.
-- **Extension**: Chrome extension using manifest v3.
-- **Nginx**: Reverse proxy.
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a pull request.
-```
-
-This setup provides a solid foundation for your bookmarking application. You can expand on this by adding more detailed features and logic to the backend, improving the frontend UI, and enhancing the Chrome extension functionality.

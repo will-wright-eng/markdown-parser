@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/spf13/cobra"
+	"strings"
 	"log"
 	"os"
 )
@@ -22,12 +23,19 @@ func main() {
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			file := args[0]
-			err := parseMarkdown(file)
+			tmpPrefix, _ := cmd.Flags().GetString("tmpPrefix")
+			if !strings.HasSuffix(tmpPrefix, "/") {
+				tmpPrefix += "/"
+			}
+			err := parseMarkdownWithPrefix(file, tmpPrefix)
 			if err != nil {
 				log.Fatalf("Error parsing markdown: %v", err)
 			}
 		},
 	}
+
+	// Add a flag for tmpPrefix with a default value of "tmp/"
+	parseCmd.Flags().StringP("tmpPrefix", "t", "tmp/", "Temporary file prefix")
 
 	rootCmd.AddCommand(parseCmd)
 	if err := rootCmd.Execute(); err != nil {
@@ -35,4 +43,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
