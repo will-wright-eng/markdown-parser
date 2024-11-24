@@ -4,7 +4,7 @@ import (
     "os"
 
     "github.com/spf13/cobra"
-    "parse/internal/logger"
+    "github.com/will-wright-eng/parse/internal/logger"
 )
 
 var rootCmd = &cobra.Command{

@@ -123,7 +123,7 @@ install: build ## Install the application
 	@mkdir -p $(GOBIN_LOCAL)
 	@cp $(GOBIN)/$(BINARY_NAME) $(GOBIN_LOCAL)/
 	@echo "Installed $(BINARY_NAME) to $(GOBIN_LOCAL)/$(BINARY_NAME)"
-	@echo "Add $(GOBIN_LOCAL) to your PATH: export PATH=\$PATH:$(GOBIN_LOCAL)"
+	@echo "Add $(GOBIN_LOCAL) to your PATH: export PATH=\$$PATH:$(GOBIN_LOCAL)"
 
 uninstall: ## Uninstall the application
 	@echo "Uninstalling $(BINARY_NAME)..."

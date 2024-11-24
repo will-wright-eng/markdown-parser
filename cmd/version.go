@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"parse/internal/version"
+	"github.com/will-wright-eng/parse/internal/version"
 
 	"github.com/spf13/cobra"
 )

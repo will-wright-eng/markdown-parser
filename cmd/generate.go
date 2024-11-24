@@ -5,8 +5,8 @@ import (
     "fmt"
     "os"
 
-    "parse/internal/generator"
-    "parse/internal/parser"
+    "github.com/will-wright-eng/parse/internal/generator"
+    "github.com/will-wright-eng/parse/internal/parser"
 
     "github.com/spf13/cobra"
 )

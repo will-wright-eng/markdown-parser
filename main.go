@@ -1,6 +1,6 @@
 package main
 
-import "parse/cmd"
+import "github.com/will-wright-eng/parse/cmd"
 
 func main() {
     cmd.Execute()

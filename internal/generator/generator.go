@@ -6,7 +6,7 @@ import (
     "path/filepath"
     "strings"
 
-    "parse/internal/parser"
+    "github.com/will-wright-eng/parse/internal/parser"
 )
 
 type GeneratorOptions struct {
