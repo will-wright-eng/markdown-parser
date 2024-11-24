@@ -51,31 +51,29 @@ parse generate -i input.md -o output_dir
 
 The tool supports multiple formats for specifying files in your markdown:
 
-```markdown
-## path/to/file1.txt
-```python
-def hello():
-    print("Hello")
-```
+    ## path/to/file1.txt
+    ```python
+    def hello():
+        print("Hello")
+    ```
 
-file: path/to/file2.js
-```javascript
-console.log('Hello');
-```
+    file: path/to/file2.js
+    ```javascript
+    console.log('Hello');
+    ```
 
-path/to/file3.go
-```go
-package main
+    path/to/file3.go
+    ```go
+    package main
 
-func main() {
-    println("Hello")
-}
-```
-```
+    func main() {
+        println("Hello")
+    }
+    ```
 
 ### Project Structure
 
-```
+```bash
 .
 ├── Makefile              # Build and development commands
 ├── README.md            # Project documentation
@@ -154,6 +152,7 @@ parse generate -i template.md -o myproject
 ```
 
 Will create:
+
 ```
 myproject/
 ├── config/
