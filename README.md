@@ -13,7 +13,7 @@ A command-line tool that generates files and directory structures from markdown 
 
 ```bash
 # Clone the repository
-git clone https://github.com/will-wright-eng/markdown-parser
+git clone https://github.com/will-wright-eng/parse
 cd parse
 
 # Initialize the project
