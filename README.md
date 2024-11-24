@@ -53,24 +53,24 @@ The tool supports multiple formats for specifying files in your markdown:
 
 ```markdown
 ## path/to/file1.txt
-\```python
+```python
 def hello():
     print("Hello")
-\```
+```
 
 file: path/to/file2.js
-\```javascript
+```javascript
 console.log('Hello');
-\```
+```
 
 path/to/file3.go
-\```go
+```go
 package main
 
 func main() {
     println("Hello")
 }
-\```
+```
 ```
 
 ### Project Structure
@@ -129,7 +129,7 @@ Commands:
 ```markdown
 config/settings.json
 
-\```json
+```json
 {
   "environment": "development",
   "port": 3000,
@@ -138,13 +138,13 @@ config/settings.json
     "port": 5432
   }
 }
-\```
+```
 
 src/main.js
 
-\```javascript
+```javascript
 console.log('Application starting...');
-\```
+```
 ```
 
 Running:
