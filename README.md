@@ -22,7 +22,7 @@ make init
 # Build the project
 make build
 
-# Optionally, install to your $GOPATH/bin
+# Optionally, install to your ~/.go/bin
 make install
 ```
 
